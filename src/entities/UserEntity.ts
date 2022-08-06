@@ -7,7 +7,7 @@ import {
   Timestamp,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserRole } from '../enum/role.enum';
+import { UserRole } from '../enums/roles.enum';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -23,7 +23,7 @@ export class UserEntity {
   @Column({ name: 'last_name', nullable: true })
   lastName: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   email: string;
 
   @Column({ nullable: true })
