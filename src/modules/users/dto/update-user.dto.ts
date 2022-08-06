@@ -16,4 +16,6 @@ export class UpdateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
+
+  updatedAt: Date;
 }

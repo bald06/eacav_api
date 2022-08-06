@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { UserEntity } from './entities/UserEntity';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { ProductsModule } from './modules/products/products.module';
+
+import { AppService } from './app.service';
+
+import { UserEntity } from './entities/UserEntity';
+import { ProductsEntity } from './entities/ProductsEntity';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { AuthModule } from './modules/auth/auth.module';
       username: process.env.TYPEORM_USERNAME,
       password: process.env.TYPEORM_PASSWORD,
       database: process.env.TYPEORM_DATABASE,
-      entities: [UserEntity],
+      entities: [UserEntity, ProductsEntity],
       migrations: ['dist/migrations/*{.ts,.js}'],
       migrationsRun: true,
       autoLoadEntities: true,
@@ -26,6 +28,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    ProductsModule,
   ],
   controllers: [],
   providers: [AppService],

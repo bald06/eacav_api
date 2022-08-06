@@ -10,23 +10,23 @@ import { UserEntity } from '../../entities/UserEntity';
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    private userEntity: Repository<UserEntity>,
   ) {}
   async create(req: CreateUserDto) {
     const hashPassword = await bcrypt.hash(req.password.toString(), 15);
     req.password = hashPassword;
-    const user = this.userRepository.create(req);
-    return await this.userRepository.save(user);
+    const user = this.userEntity.create(req);
+    return await this.userEntity.save(user);
   }
 
   async findOneByEmail(email) {
-    return await this.userRepository.findOne({
+    return await this.userEntity.findOne({
       where: { email: email, deletedAt: null },
     });
   }
 
   async findUserById(id: number) {
-    const user = await this.userRepository.findOne({
+    const user = await this.userEntity.findOne({
       where: { id, deletedAt: null },
     });
     if (!user) {
@@ -36,7 +36,7 @@ export class UsersService {
   }
 
   async findUsers() {
-    return await this.userRepository.findOne({
+    return await this.userEntity.findOne({
       where: { deletedAt: null },
     });
   }
@@ -46,7 +46,8 @@ export class UsersService {
     if (!user) {
       return false;
     }
-    return await this.userRepository.update({ id }, req);
+    req.updatedAt = new Date(Date.now());
+    return await this.userEntity.update({ id }, req);
   }
 
   async deleteUserById(id: number) {
@@ -54,6 +55,9 @@ export class UsersService {
     if (!user) {
       return false;
     }
-    return await this.userRepository.update({ id }, { deletedAt: Date.now() });
+    return await this.userEntity.update(
+      { id },
+      { deletedAt: new Date(Date.now()) },
+    );
   }
 }
