@@ -2,18 +2,34 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { GlobalService } from 'src/app.service';
 import { ProductsEntity } from '../../entities/ProductsEntity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
+import { uuid } from 'uuidv4';
+
+const globalService = new GlobalService();
 @Injectable()
 export class ProductsService {
+  extension: any[] = ['png', 'jpg', 'jpeg'];
   constructor(
     @InjectRepository(ProductsEntity)
     private productEntity: Repository<ProductsEntity>,
   ) {}
 
   async create(req: CreateProductDto) {
+    const type = req.image != null ? req.image.split(';')[0].split('/')[1] : '';
+    if (!this.extension.includes(type)) {
+      return false;
+    }
+    const fileName = `${uuid()}.${type}`;
+    // aqui subimos la imagen
+    await globalService.uploadFile(
+      fileName,
+      req.image.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''),
+    );
+    req.image = fileName;
     const product = this.productEntity.create(req);
     return await this.productEntity.save(product);
   }

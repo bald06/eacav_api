@@ -7,4 +7,8 @@ export const environments = {
   TYPEORM_DATABASE: 'ibaco',
   TYPEORM_SYNCHRONIZE: false,
   TYPEORM_AUTOLOAD_ENTITIES: true,
+
+  // http-server
+  PATH_HTTP_SERVER: '/home/cbarbosa/Documents/projects/public_html/images/',
+  PORT_HTTP_SERVER: 3001,
 };
