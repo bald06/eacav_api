@@ -22,6 +22,6 @@ export class CreateProductDto {
   stock: number;
 
   @IsNotEmpty()
-  @IsBase64()
+  @IsString()
   image: string;
 }

@@ -1,4 +1,4 @@
-import { IsBase64, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Category } from '../../../enums/category.enum';
 
 export class UpdateProductDto {
@@ -22,7 +22,7 @@ export class UpdateProductDto {
   stock: number;
 
   @IsNotEmpty()
-  @IsBase64()
+  @IsString()
   image: string;
 
   updatedAt: Date;

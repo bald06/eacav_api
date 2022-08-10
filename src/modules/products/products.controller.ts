@@ -29,6 +29,12 @@ export class ProductsController extends AppController {
   ): Promise<ProductsEntity> {
     try {
       const product = await this.productsService.create(request);
+      if (!product) {
+        return this.responseErrorWithMessage(
+          'La imagen tiene que ser de formato PNG, JPEG o JPG',
+          res,
+        );
+      }
       return this.responseOk(Object(product), res);
     } catch (error) {
       console.log(error);
@@ -37,10 +43,7 @@ export class ProductsController extends AppController {
   }
 
   @Get('/:id')
-  async getProductById(
-    @Param('id') id: number,
-    @Res() res: Response,
-  ): Promise<ProductsEntity> {
+  async getProductById(@Param('id') id: number, @Res() res: Response) {
     try {
       const product = await this.productsService.findProductById(id);
       if (!product) {

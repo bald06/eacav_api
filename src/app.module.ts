@@ -5,7 +5,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ProductsModule } from './modules/products/products.module';
 
-import { AppService } from './app.service';
+import { GlobalService } from './app.service';
 
 import { UserEntity } from './entities/UserEntity';
 import { ProductsEntity } from './entities/ProductsEntity';
@@ -30,7 +30,8 @@ import { ProductsEntity } from './entities/ProductsEntity';
     AuthModule,
     ProductsModule,
   ],
+  exports: [GlobalService],
   controllers: [],
-  providers: [AppService],
+  providers: [GlobalService],
 })
 export class AppModule {}

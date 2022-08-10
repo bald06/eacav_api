@@ -1,5 +1,5 @@
 export enum Category {
   VEGANO = 'VEGANO',
-  VEGETARIANO = 'VGETARIANO',
+  VEGETARIANO = 'VEGETARIANO',
   CON_CARNE = 'CON_CARNE',
 }
