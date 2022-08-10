@@ -18,8 +18,9 @@ export class UsersService {
     req.password = hashPassword;
     if (!req.role) {
       req.role = UserRole.CLIENT;
+    } else {
+      req.role = UserRole.ADMIN;
     }
-    req.role = UserRole.ADMIN;
     const user = this.userEntity.create(req);
     return await this.userEntity.save(user);
   }
