@@ -8,6 +8,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
 import { uuid } from 'uuidv4';
+import { environments } from 'src/config/environments';
 
 const globalService = new GlobalService();
 @Injectable()
@@ -24,7 +25,6 @@ export class ProductsService {
       return false;
     }
     const fileName = `${uuid()}.${type}`;
-    // aqui subimos la imagen
     await globalService.uploadFile(
       fileName,
       req.image.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''),
@@ -38,6 +38,7 @@ export class ProductsService {
     const product = await this.productEntity.findOne({
       where: { id, deletedAt: null },
     });
+    product.image = `${environments.PATH_IMAGES}${product.image}`;
     if (!product) {
       return false;
     }
@@ -45,16 +46,26 @@ export class ProductsService {
   }
 
   async findProducts() {
-    return await this.productEntity.findOne({
+    const products = await this.productEntity.find({
       where: { deletedAt: null },
     });
+    for (const product of products) {
+      product.image = `${environments.PATH_IMAGES}${product.image}`;
+    }
+    return products;
   }
 
   async updateProductById(id: number, req: UpdateProductDto) {
     const product = await this.findProductById(id);
+    const type = req.image != null ? req.image.split(';')[0].split('/')[1] : '';
+    if (!this.extension.includes(type)) {
+      return false;
+    }
     if (!product) {
       return false;
     }
+    const fileName = `${uuid()}.${type}`;
+    req.image = fileName;
     req.updatedAt = new Date(Date.now());
     return await this.productEntity.update({ id }, req);
   }
@@ -64,6 +75,9 @@ export class ProductsService {
     if (!product) {
       return false;
     }
-    return await this.productEntity.update({ id }, { deletedAt: Date.now() });
+    return await this.productEntity.update(
+      { id },
+      { deletedAt: new Date(Date.now()) },
+    );
   }
 }

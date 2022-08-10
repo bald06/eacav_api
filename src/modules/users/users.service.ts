@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from '../../entities/UserEntity';
+import { UserRole } from 'src/enums/roles.enum';
 
 @Injectable()
 export class UsersService {
@@ -15,6 +16,10 @@ export class UsersService {
   async create(req: CreateUserDto) {
     const hashPassword = await bcrypt.hash(req.password.toString(), 15);
     req.password = hashPassword;
+    if (!req.role) {
+      req.role = UserRole.CLIENT;
+    }
+    req.role = UserRole.ADMIN;
     const user = this.userEntity.create(req);
     return await this.userEntity.save(user);
   }
