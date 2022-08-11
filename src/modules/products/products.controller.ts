@@ -15,6 +15,7 @@ import { Response } from 'express';
 import { ProductsService } from './products.service';
 import { ProductsEntity } from '../../entities/ProductsEntity';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { Category } from '../../enums/category.enum';
 
 @Controller('products')
 export class ProductsController extends AppController {
@@ -55,10 +56,13 @@ export class ProductsController extends AppController {
     }
   }
 
-  @Get()
-  async getProducts(@Res() res: Response): Promise<ProductsEntity[]> {
+  @Post('/list/:category?')
+  async getProducts(
+    @Res() res: Response,
+    @Param('category') category: Category,
+  ): Promise<ProductsEntity[]> {
     try {
-      const product = await this.productsService.findProducts();
+      const product = await this.productsService.findProducts(category);
       return this.responseOk(Object(product), res);
     } catch (error) {
       return this.responseErrorWithMessage(error, res);
