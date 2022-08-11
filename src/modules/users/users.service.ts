@@ -41,9 +41,9 @@ export class UsersService {
     return user;
   }
 
-  async findUsers() {
+  async findUsers(role: UserRole) {
     return await this.userEntity.findOne({
-      where: { deletedAt: null },
+      where: { deletedAt: null, role },
     });
   }
 
