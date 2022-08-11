@@ -41,10 +41,16 @@ export class UsersService {
     return user;
   }
 
-  async findUsers(role: UserRole) {
-    return await this.userEntity.findOne({
-      where: { deletedAt: null, role },
-    });
+  async findUsers(role: string) {
+    if (!role) {
+      return await this.userEntity.find({
+        where: { deletedAt: null },
+      });
+    } else {
+      return await this.userEntity.find({
+        where: { deletedAt: null, role },
+      });
+    }
   }
 
   async updateUserById(id: number, req: UpdateUserDto) {

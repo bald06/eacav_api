@@ -14,6 +14,7 @@ import { Response } from 'express';
 import { AppController } from '../../app.controller';
 import { UserEntity } from '../../entities/UserEntity';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserRole } from '../../enums/roles.enum';
 
 @Controller('users')
 export class UsersController extends AppController {
@@ -51,10 +52,13 @@ export class UsersController extends AppController {
     }
   }
 
-  @Get()
-  async getUsers(@Res() res: Response): Promise<UserEntity[]> {
+  @Post('/list/:role?')
+  async getUsers(
+    @Res() res: Response,
+    @Param('role') role: UserRole,
+  ): Promise<UserEntity[]> {
     try {
-      const user = await this.usersService.findUsers();
+      const user = await this.usersService.findUsers(role);
       return this.responseOk(Object(user), res);
     } catch (error) {
       return this.responseErrorWithMessage(error, res);

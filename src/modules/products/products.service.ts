@@ -45,10 +45,17 @@ export class ProductsService {
     return product;
   }
 
-  async findProducts() {
-    const products = await this.productEntity.find({
-      where: { deletedAt: null },
-    });
+  async findProducts(category: string) {
+    let products: any;
+    if (!category) {
+      products = await this.productEntity.find({
+        where: { deletedAt: null },
+      });
+    } else {
+      products = await this.productEntity.find({
+        where: { deletedAt: null, category },
+      });
+    }
     for (const product of products) {
       product.image = `${environments.PATH_IMAGES}${product.image}`;
     }
