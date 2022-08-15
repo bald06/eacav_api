@@ -77,9 +77,10 @@ export class ProductsController extends AppController {
   ): Promise<ProductsEntity> {
     try {
       const product = await this.productsService.updateProductById(id, request);
-      if (!product) {
-        return this.responseErrorWithMessage('El producto no existe', res);
-      }
+      console.log(request.image);
+      // if (!product) {
+      //   return this.responseErrorWithMessage('El producto no existe', res);
+      // }
       return this.responseOk(Object(product), res);
     } catch (error) {
       return this.responseErrorWithMessage(error, res);
