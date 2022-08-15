@@ -63,17 +63,28 @@ export class ProductsService {
   }
 
   async updateProductById(id: number, req: UpdateProductDto) {
-    const product = await this.findProductById(id);
+    const product = await this.productEntity.findOne({
+      where: { id, deletedAt: null },
+    });
     const type = req.image != null ? req.image.split(';')[0].split('/')[1] : '';
-    if (!this.extension.includes(type)) {
+    if (!this.extension.includes(type) && req.image) {
       return false;
     }
     if (!product) {
       return false;
     }
-    const fileName = `${uuid()}.${type}`;
-    req.image = fileName;
-    req.updatedAt = new Date(Date.now());
+    console.log(product.image);
+    if (req.image === '') {
+      req.image = product.image;
+    } else {
+      const fileName = `${uuid()}.${type}`;
+      await globalService.uploadFile(
+        fileName,
+        req.image.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''),
+      );
+      req.image = fileName;
+      req.updatedAt = new Date(Date.now());
+    }
     return await this.productEntity.update({ id }, req);
   }
 

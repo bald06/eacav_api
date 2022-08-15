@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Category } from '../../../enums/category.enum';
 
 export class UpdateProductDto {
@@ -21,7 +21,7 @@ export class UpdateProductDto {
   @IsNumber()
   stock: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   image: string;
 
