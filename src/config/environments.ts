@@ -9,7 +9,7 @@ export const environments = {
   TYPEORM_AUTOLOAD_ENTITIES: true,
 
   // http-server
-  PATH_HTTP_SERVER: '/home/cbarbosa/Documents/projects/public_html/images/',
-  PORT_HTTP_SERVER: 3001,
-  PATH_IMAGES: 'http://localhost:3001/images/products/',
+  PATH_HTTP_SERVER: 'C:/Users/bryan/OneDrive/Documentos/Proyectos/public_html/images/',
+  PORT_HTTP_SERVER: 3005,
+  PATH_IMAGES: 'http://localhost:3005/images/products/',
 };
